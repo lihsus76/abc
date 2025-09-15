@@ -189,119 +189,119 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             title: "Ishq Di Baajiyaan",
             artist: "Diljit Dosanjh",
-            src: "./Audio/hindi/ishq-di-baajiyaan.mp3",
+            src: "./hindi/ishq-di-baajiyaan.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Tu Chale",
             artist: "ARIJIT SINGH, SHREYA GHOSHAL",
-            src: "./Audio/hindi/tu-chale.mp3",
+            src: "./hindi/tu-chale.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Chaar Kadam",
             artist: "SHAAN, SHREYA GHOSHA",
-            src: "./Audio/hindi/chaar-kadam.mp3",
+            src: "./hindi/chaar-kadam.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Nodivalandava",
             artist: "Armaan Malik, Shreya Ghoshal",
-            src: "./Audio/hindi/Nodivalandava.mp3",
+            src: "./hindi/Nodivalandava.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Tu Jaane Na",
             artist: "Atif Aslam",
-            src: "./Audio/hindi/tu-jane-na.mp3",
+            src: "./hindi/tu-jane-na.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Shukran Allah",
             artist: "Sonu Nigam, Shreya Ghoshal & Salim Merchant ",
-            src: "./Audio/hindi/shukran-allah.mp3",
+            src: "./hindi/shukran-allah.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Ishq Sufiyana",
             artist: "Kamal Khan",
-            src: "./Audio/hindi/ishq-shufiyana.mp3",
+            src: "./hindi/ishq-shufiyana.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Pehli Nazar Mein",
             artist: "Atif Aslam",
-            src: "./Audio/hindi/pehli-nazar-mein.mp3",
+            src: "./hindi/pehli-nazar-mein.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Ye Tune Kya Kiya",
             artist: "Javed Bashir",
-            src: "./Audio/hindi/ye-tune-kya-kiya.mp3",
+            src: "./hindi/ye-tune-kya-kiya.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Khudya Khair",
             artist: "Soham Chakrabarthy, Akruti Kakkar, Monali",
-            src: "./Audio/hindi/khudaya-khair.mp3",
+            src: "./hindi/khudaya-khair.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Naino Ne Baandhi",
             artist: "Yasser Desai",
-            src: "./Audio/hindi/naino-ne-baandhi.mp3",
+            src: "./hindi/naino-ne-baandhi.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Tere Ishq",
             artist: "Monu",
-            src: "./Audio/hindi/tere-ishq.mp3",
+            src: "./hindi/tere-ishq.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Hona Tha Pyar",
             artist: " Atif Aslam & Hadiqa Kiani",
-            src: "./Audio/hindi/hona-tha-pyar.mp3",
+            src: "./hindi/hona-tha-pyar.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Humko Pyar Hua",
             artist: "Tulsi Kumar, KK",
-            src: "./Audio/hindi/humko-pyar-hua.mp3",
+            src: "./hindi/humko-pyar-hua.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Teri Ore",
             artist: "Rahat Fateh Ali Khan & Shreya Ghoshal",
-            src: "./Audio/hindi/teri-ore.mp3",
+            src: "./hindi/teri-ore.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Subhanallah",
             artist: "SREERAM, SHILPA RAO",
-            src: "./Audio/hindi/subhanallah.mp3",
+            src: "./hindi/subhanallah.mp3",
             category: "hindi",
             duration: "0:00"
         },
         {
             title: "Piya o re piya",
             artist: "Atif Aslam & Shreya Ghoshal",
-            src: "./Audio/hindi/piya-o-re-piya.mp3",
+            src: "./hindi/piya-o-re-piya.mp3",
             category: "hindi",
             duration: "0:00"
         }
