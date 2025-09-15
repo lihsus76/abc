@@ -1,148 +1,79 @@
-// Advanced Resource Preloader
-class AdvancedLoader {
-    constructor() {
-        this.loadingScreen = document.getElementById('loadingScreen');
-        this.progressBar = document.getElementById('loadingBar');
-        this.progressText = document.getElementById('loadingPercentage');
-        this.loadingText = document.getElementById('loadingStatus');
-        this.progress = 0;
-        this.totalResources = 0;
-        this.loadedResources = 0;
-        this.resources = [];
-        
-        this.init();
+// Modern Loading Screen Controller
+let loadingProgress = 0;
+const loadingBar = document.getElementById('loadingBar');
+const loadingScreen = document.getElementById('loadingScreen');
+const loadingPercentage = document.getElementById('loadingPercentage');
+const loadingStatus = document.getElementById('loadingStatus');
+
+const loadingSteps = [
+    { progress: 15, status: 'Loading stylesheets...', delay: 200 },
+    { progress: 30, status: 'Loading audio files...', delay: 400 },
+    { progress: 50, status: 'Initializing player...', delay: 300 },
+    { progress: 70, status: 'Loading playlist...', delay: 350 },
+    { progress: 85, status: 'Setting up controls...', delay: 250 },
+    { progress: 100, status: 'Ready to play!', delay: 200 }
+];
+
+function updateProgress(progress, status = '') {
+    loadingProgress = Math.min(progress, 100);
+    
+    if (loadingBar) {
+        loadingBar.style.width = loadingProgress + '%';
     }
-
-    init() {
-        this.collectResources();
-        this.preloadResources();
+    
+    if (loadingPercentage) {
+        loadingPercentage.textContent = Math.round(loadingProgress) + '%';
     }
-
-    collectResources() {
-        // CSS files
-        document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-            this.resources.push({ type: 'css', url: link.href, element: link });
-        });
-        
-        // JS files
-        document.querySelectorAll('script[src]').forEach(script => {
-            this.resources.push({ type: 'js', url: script.src, element: script });
-        });
-        
-        // Images
-        document.querySelectorAll('img').forEach(img => {
-            if (img.src) this.resources.push({ type: 'image', url: img.src, element: img });
-        });
-        
-        // Audio files from playlist
-        if (window.playlist) {
-            window.playlist.forEach(song => {
-                this.resources.push({ type: 'audio', url: song.src, element: null });
-            });
-        }
-        
-        this.totalResources = this.resources.length;
-        this.loadingText.textContent = `Loading ${this.totalResources} resources...`;
+    
+    if (status && loadingStatus) {
+        loadingStatus.textContent = status;
     }
-
-    preloadResources() {
-        if (this.totalResources === 0) {
-            this.completeLoading();
-            return;
-        }
-
-        this.resources.forEach((resource, index) => {
-            this.loadResource(resource, index);
-        });
-    }
-
-    loadResource(resource, index) {
-        const onLoad = () => {
-            this.loadedResources++;
-            this.updateProgress();
-            
-            if (this.loadedResources >= this.totalResources) {
-                setTimeout(() => this.completeLoading(), 500);
-            }
-        };
-
-        const onError = () => {
-            console.warn(`Failed to load: ${resource.url}`);
-            this.loadedResources++;
-            this.updateProgress();
-            
-            if (this.loadedResources >= this.totalResources) {
-                setTimeout(() => this.completeLoading(), 500);
-            }
-        };
-
-        switch (resource.type) {
-            case 'css':
-                if (resource.element.sheet) {
-                    onLoad();
-                } else {
-                    resource.element.onload = onLoad;
-                    resource.element.onerror = onError;
-                }
-                break;
-                
-            case 'js':
-                if (resource.element.readyState === 'complete') {
-                    onLoad();
-                } else {
-                    resource.element.onload = onLoad;
-                    resource.element.onerror = onError;
-                }
-                break;
-                
-            case 'image':
-                const img = new Image();
-                img.onload = onLoad;
-                img.onerror = onError;
-                img.src = resource.url;
-                break;
-                
-            case 'audio':
-                const audio = new Audio();
-                audio.preload = 'metadata';
-                audio.oncanplaythrough = onLoad;
-                audio.onerror = onError;
-                audio.src = resource.url;
-                break;
-        }
-    }
-
-    updateProgress() {
-        this.progress = Math.round((this.loadedResources / this.totalResources) * 100);
-        this.progressBar.style.width = `${this.progress}%`;
-        this.progressText.textContent = `${this.progress}%`;
-        this.loadingText.textContent = `Loading resources... (${this.loadedResources}/${this.totalResources})`;
-    }
-
-    completeLoading() {
-        this.progress = 100;
-        this.progressBar.style.width = '100%';
-        this.progressText.textContent = '100%';
-        this.loadingText.textContent = 'All resources loaded!';
-        
+    
+    if (loadingProgress >= 100) {
         setTimeout(() => {
-            this.loadingScreen.classList.add('hidden');
+            loadingScreen.classList.add('hidden');
             setTimeout(() => {
-                this.loadingScreen.style.display = 'none';
+                loadingScreen.style.display = 'none';
             }, 800);
-        }, 800);
+        }, 500);
     }
 }
 
-// Wait for DOM and playlist to be ready
-function initAdvancedLoader() {
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => new AdvancedLoader(), 100);
-        });
-    } else {
-        setTimeout(() => new AdvancedLoader(), 100);
+function animateProgress(target, status) {
+    const step = (target - loadingProgress) / 20;
+    const animate = () => {
+        if (Math.abs(target - loadingProgress) > 1) {
+            loadingProgress += step;
+            updateProgress(loadingProgress, status);
+            requestAnimationFrame(animate);
+        } else {
+            updateProgress(target, status);
+        }
+    };
+    animate();
+}
+
+let currentStep = 0;
+
+function loadNextStep() {
+    if (currentStep < loadingSteps.length) {
+        const step = loadingSteps[currentStep];
+        setTimeout(() => {
+            animateProgress(step.progress, step.status);
+            currentStep++;
+            loadNextStep();
+        }, step.delay);
     }
 }
 
-initAdvancedLoader();
+// Start loading when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    loadNextStep();
+});
+
+// Ensure completion when window loads
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        animateProgress(100, 'Ready to play!');
+    }, 300);
+});
