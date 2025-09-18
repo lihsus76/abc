@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const volumeSlider = document.getElementById('volumeSlider');
-    const volumeIcon = document.getElementById('volumeIcon');
 
     // Playlist elements
     const playlistElement = document.getElementById('playlist');
@@ -469,30 +468,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-  function getAudioDuration(url, index) {
-    return new Promise(resolve => {
-        const a = new Audio(url);
-        a.addEventListener('loadedmetadata', () => resolve({ index, duration: formatTime(a.duration) }));
-        a.addEventListener('error', () => resolve({ index, duration: '0:00' }));
-        setTimeout(() => resolve({ index, duration: '0:00' }), 10000);
-    });
-}
+    // --- Auto Detect Duration ---
+    async function getAudioDuration(url) {
+        return new Promise(resolve => {
+            const a = new Audio(url);
+            a.addEventListener('loadedmetadata', () => resolve(formatTime(a.duration)));
+            a.addEventListener('error', () => resolve('0:00'));
+            setTimeout(() => resolve('0:00'), 10000);
+        });
+    }
 
-async function loadAudioDurations() {
-    const promises = playlist.map((s, i) => getAudioDuration(window.audioCache ? window.audioCache.getCachedAudio(s.src) : s.src, i));
-    const results = await Promise.all(promises);
-    results.forEach(r => {
-        playlist[r.index].duration = r.duration;
+    async function loadAudioDurations() {
+        for (let i = 0; i < playlist.length; i++) {
+            const song = playlist[i];
+            const url = window.audioCache.getCachedAudio(song.src);
+            song.duration = await getAudioDuration(url);
 
-        // Update the DOM immediately for each song
-        const li = document.querySelectorAll('.playlist-item')[r.index];
-        if (li) li.querySelector('.song-duration').textContent = r.duration;
-        
-        const catLi = document.querySelectorAll('.category-song-item')[r.index];
-        if (catLi) catLi.querySelector('.song-duration').textContent = r.duration;
-    });
-}
+            // Update DOM immediately
+            const li = document.querySelectorAll('.playlist-item')[i];
+            if (li) li.querySelector('.song-duration').textContent = song.duration;
 
+            const catLi = document.querySelectorAll('.category-song-item')[i];
+            if (catLi) catLi.querySelector('.song-duration').textContent = song.duration;
+        }
+    }
 
     // --- Initialize ---
     audio.volume = 0.7;
