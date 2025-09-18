@@ -67,7 +67,7 @@ button {
 /* Now Playing Section */
 
 .now-playing {
-    background: rgb(169, 58, 58);
+    background: rgba(255, 77, 109, 0.1);
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 25px;
@@ -402,4 +402,5 @@ button {
 #downloadAllBtn:active {
     transform: translateY(1px);
     box-shadow: 0 4px 12px rgba(255, 107, 129, 0.3);
+
 }
