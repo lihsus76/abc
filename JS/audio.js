@@ -469,23 +469,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Load Audio Durations ---
-    function getAudioDuration(url, index) {
-        return new Promise(resolve => {
-            const a = new Audio(url);
-            a.addEventListener('loadedmetadata', () => resolve({ index, duration: formatTime(a.duration) }));
-            a.addEventListener('error', () => resolve({ index, duration: '0:00' }));
-            setTimeout(() => resolve({ index, duration: '0:00' }), 10000);
-        });
-    }
+  function getAudioDuration(url, index) {
+    return new Promise(resolve => {
+        const a = new Audio(url);
+        a.addEventListener('loadedmetadata', () => resolve({ index, duration: formatTime(a.duration) }));
+        a.addEventListener('error', () => resolve({ index, duration: '0:00' }));
+        setTimeout(() => resolve({ index, duration: '0:00' }), 10000);
+    });
+}
 
-    async function loadAudioDurations() {
-        const promises = playlist.map((s, i) => getAudioDuration(window.audioCache.getCachedAudio(s.src), i));
-        const results = await Promise.all(promises);
-        results.forEach(r => playlist[r.index].duration = r.duration);
-        renderPlaylist();
-        renderCategoryPlaylists();
-    }
+async function loadAudioDurations() {
+    const promises = playlist.map((s, i) => getAudioDuration(window.audioCache ? window.audioCache.getCachedAudio(s.src) : s.src, i));
+    const results = await Promise.all(promises);
+    results.forEach(r => {
+        playlist[r.index].duration = r.duration;
+
+        // Update the DOM immediately for each song
+        const li = document.querySelectorAll('.playlist-item')[r.index];
+        if (li) li.querySelector('.song-duration').textContent = r.duration;
+        
+        const catLi = document.querySelectorAll('.category-song-item')[r.index];
+        if (catLi) catLi.querySelector('.song-duration').textContent = r.duration;
+    });
+}
+
 
     // --- Initialize ---
     audio.volume = 0.7;
